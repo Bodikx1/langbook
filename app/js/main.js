@@ -1,18 +1,32 @@
 $(document).ready(function(){
-    localStorage.setItem('sentences', JSON.stringify({
-        "sentences": [
-            {
-                "language_1": "Bonjour je m'appelle Bogdan",
-                "language_2": "Hello my name is Bogdan",
-                "tags": ["tag1", "tag2"]
-            },
-            {
-                "language_1": "Bonjour je m'appelle Bogdan 2",
-                "language_2": "Hello my name is Bogdan 2",
-                "tags": ["tag1", "tag3"]
-            }
-        ]
-    }));
-    SentenceGenerator.init();
-    //SentenceManager.init();
+    var
+        init = function () {
+            loadData();
+
+            SentenceGenerator.init();
+            SentenceManager.init();
+        },
+
+        loadData = function () {
+            $.ajax({
+                url: 'http://www.langbook.it/api/sentences',
+                method: 'GET',
+                async: true,
+                data: null,
+                timeout: 1000,
+                success: function (data) {
+                    if (data.status === "success") {
+                        localStorage.setItem('sentences', JSON.stringify({
+                            "sentences": data.sentences
+                        }));
+                        SentenceGenerator.show();
+                    }
+                },
+                error: function (msg, error, HTTPErr) {
+                }
+            });
+
+        };
+
+    init();
 });

@@ -23,12 +23,12 @@ var SentenceGenerator = (function () {
 
         if (restoreSentences != null) {
             $.each(restoreSentences.sentences, function (key, val) {
-                var item = $('<li/>', {class: "sentence-elem"}).append(
+                var item = $('<li/>', {class: "sentence-elem", uuid: val.uuid}).append(
                     $('<div/>').append(
-                        $('<a/>', {href: "#", text: val.language_1})
+                        $('<a/>', {href: "#", text: val.lang1})
                     ),
                     $('<div/>').append(
-                        $('<span/>', {text: val.language_2})
+                        $('<span/>', {text: val.lang2})
                     ),
                     $('<div/>').append(
                         $('<span/>', {text: _tagsWrapper(val.tags)})
@@ -55,12 +55,32 @@ var SentenceGenerator = (function () {
 
 
 var SentenceManager = (function () {
-    var currSentence = null;
+    var currSentence = null,
+        sentenceAddInput = $('.sentenceAdd'),
+        controlPanel = $('.sentence-control');
 
     function _setUpListners() {
+        $(document).on('keyup', sentenceAddInput, _setCurrSentence);
+        $(document).on('click', '#sentences-list .sentence-elem a', _setCurrSentence);
     };
 
-    function _setCurrSentence() {
+    function _setCurrSentence(e) {
+        if (e.target.type === "text") {
+            !controlPanel.is(':animated') && controlPanel.fadeIn(500, function() {
+                sentenceAddInput.parent().hide();
+                controlPanel.find('textarea[name="language1"]').focus();
+            });
+            controlPanel.find('textarea[name="language1"]').val(e.target.value);
+        }
+
+        if (e.target.tagName === "A") {
+            !controlPanel.is(':animated') && controlPanel.fadeIn(500, function() {
+                sentenceAddInput.parent().hide();
+                controlPanel.find('textarea[name="language1"]').focus();
+            });
+            controlPanel.find('textarea[name="language1"]').val(e.target.text);
+            controlPanel.find('textarea[name="language2"]').val(e.target.text);
+        }
     }
 
     function _saveSentence() {

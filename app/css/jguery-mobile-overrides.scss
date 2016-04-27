@@ -5,6 +5,11 @@
 .ui-page-theme-a .ui-bar-inherit {
   background-color: #f0f0f0;
 }
+.ui-listview>.ui-li-static, .ui-listview>.ui-li-divider, .ui-listview>li>a.ui-btn
+{
+  white-space: normal;
+}
+
 
 .stretched {
   width: 100% !important;
@@ -14,6 +19,9 @@
   -webkit-border-radius: 1rem !important;
   -moz-border-radius: 1rem !important;
   border-radius: 1rem !important;
+  border-color: #BFBFBF !important;
+  border-width: 2px !important;
+  border-style: solid;
 }
 
 .search-wrap {
