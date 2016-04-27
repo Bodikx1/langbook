@@ -1,0 +1,34 @@
+.ui-overlay-a,
+.ui-page-theme-a {
+  background-color: white;
+}
+.ui-page-theme-a .ui-bar-inherit {
+  background-color: #f0f0f0;
+}
+
+.stretched {
+  width: 100% !important;
+}
+
+.rounded-borders {
+  -webkit-border-radius: 1rem !important;
+  -moz-border-radius: 1rem !important;
+  border-radius: 1rem !important;
+}
+
+.search-wrap {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  padding-right: 0;
+}
+
+.search-wrap input {
+  background-color: white !important;
+  text-align: center;
+  border-color: #BFBFBF !important;
+  border-width: 2px !important;
+  border-style: solid;
+  padding-left: 0;
+}

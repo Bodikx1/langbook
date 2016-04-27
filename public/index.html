@@ -13,22 +13,25 @@
 
 <div data-role="page" data-theme="a">
     <div data-role="header" data-position="fixed">
-        <a href="#" class="ui-btn ui-icon-user ui-btn-icon-left ui-corner-all">Login</a>
+        <a data-role="none" href="#" class="pull-left login">Login</a>
         <h1><b>langbook.it</b></h1>
+        <div style="background-color: #ddd;padding: 0 1em;" class="ui-content">
+            <input id="searchFilter" data-type="search" data-wrapper-class="search-wrap" type="text" class="ui-btn ui-corner-all stretched rounded-borders" placeholder="Search">
+        </div>
     </div>
-    <div role="main" class="ui-content">
-        Content
+    <div role="main">
+        <ul id="sentences-list" data-role="listview" data-filter="true" data-input="#searchFilter"></ul>
     </div>
     <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-        <div class="ui-content">
-            <button style="width: 100%" class="ui-btn ui-corner-all">Add a new sentence</button>
+        <div style="padding: 0 1em;" class="ui-content">
+            <input data-wrapper-class="search-wrap" data-clear-btn="true" type="text" class="ui-btn ui-corner-all stretched rounded-borders" placeholder="Add a new sentence">
         </div>
     </div>
 </div>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="/dist/js/app.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <script src="/dist/vendor/bootstrap/bootstrap.min.js"></script>
-<script src="/dist/js/app.js"></script>
 </body>
 </html>
