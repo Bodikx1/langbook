@@ -203,12 +203,16 @@ var SentenceManager = (function () {
         tagBtn.focus();
 
         tagBtn.on('blur', function(e) {
-            tagBtn.replaceWith($('<button/>', {
-                "data-role": "none",
-                class: "btn tag-btn",
-                text: tagBtn.val()
-            }));
-            tagBtn.off('blur');
+            if ($.trim(tagBtn.val())) {
+                tagBtn.replaceWith($('<button/>', {
+                    "data-role": "none",
+                    class: "btn tag-btn",
+                    text: $.trim(tagBtn.val())
+                }));
+                tagBtn.off('blur');
+            } else {
+                tagBtn.remove();
+            }
         });
     }
 
