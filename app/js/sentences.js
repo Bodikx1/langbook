@@ -95,6 +95,7 @@ var SentenceManager = (function () {
             }
         });
         $(document).on('click', '.tags-panel .addTag', _addTag);
+        $(document).on('click', '.tags-panel button:not(.addTag)', _editTag);
         $(document).on('click', '.sentenceDelete', _deleteCurrSentence);
     }
 
@@ -200,6 +201,33 @@ var SentenceManager = (function () {
             tagBtn = $('<input/>', {style: "width: 100%", class: "btn tag-btn"});
 
         tagBtn.insertBefore(self);
+        tagBtn.focus();
+
+        tagBtn.on('blur', function(e) {
+            if ($.trim(tagBtn.val())) {
+                tagBtn.replaceWith($('<button/>', {
+                    "data-role": "none",
+                    class: "btn tag-btn",
+                    text: $.trim(tagBtn.val())
+                }));
+                tagBtn.off('blur');
+            } else {
+                tagBtn.remove();
+            }
+        });
+    }
+
+    function _editTag(e) {
+        e.preventDefault();
+
+        var self = $(this),
+            tagBtn = $('<input/>', {
+                style: "width: 100%",
+                class: "btn tag-btn",
+                value: self.text()
+            });
+
+        self.replaceWith(tagBtn);
         tagBtn.focus();
 
         tagBtn.on('blur', function(e) {
