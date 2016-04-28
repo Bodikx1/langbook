@@ -23,6 +23,7 @@ var SentenceGenerator = (function () {
             timeout: 1000,
             success: function (data) {
                 if (data.status === "success") {
+                    data.sentences[0].tags = ["tag1","tag2","tag3"];
                     localStorage.setItem('sentences', JSON.stringify({
                         "sentences": data.sentences
                     }));
@@ -94,6 +95,7 @@ var SentenceManager = (function () {
             }
         });
         $(document).on('click', '.tags-panel .addTag', _addTag);
+        $(document).on('click', '.sentenceDelete', _deleteCurrSentence);
     }
 
     function _showControlPanel() {
@@ -107,6 +109,7 @@ var SentenceManager = (function () {
         !controlPanel.is(':animated') && controlPanel.fadeOut(500, function() {
             sentenceAddInput.parent().show();
             controlPanel.find('form')[0].reset();
+            tagsPanel.find(':not(.addTag)').remove();
             sentenceAddInput.val('');
             sentenceAddInput.focus();
         });
@@ -123,12 +126,19 @@ var SentenceManager = (function () {
             currSentence = {};
             currSentence["lang1"] = e.target.text;
             currSentence["lang2"] = $(this).parent().next().text();
-            currSentence["tags"] = $(this).parent().nextAll(':last-child').text();
+            currSentence["tags"] = $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
 
             _showControlPanel();
 
             controlPanel.find('textarea[name="language1"]').val(currSentence.lang1);
             controlPanel.find('textarea[name="language2"]').val(currSentence.lang2);
+            for (var i=0;currSentence.tags && i < currSentence.tags.length; i++) {
+                $('<button/>', {
+                    "data-role": "none",
+                    class: "btn tag-btn",
+                    text: currSentence.tags[i]
+                }).insertBefore(tagsPanel.find('.addTag'));
+            }
         }
     }
 
@@ -180,6 +190,16 @@ var SentenceManager = (function () {
             }));
             tagBtn.off('blur');
         });
+    }
+
+    function _deleteCurrSentence(e) {
+        e.preventDefault();
+
+        if (currSentence) {
+
+        } else {
+            _hideControlPanel();
+        }
     }
 
     return {
