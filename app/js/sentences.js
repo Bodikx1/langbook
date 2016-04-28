@@ -124,6 +124,7 @@ var SentenceManager = (function () {
 
         if (e.target.tagName === "A") {
             currSentence = {};
+            currSentence["uuid"] = $(this).closest('li').attr('uuid');
             currSentence["lang1"] = e.target.text;
             currSentence["lang2"] = $(this).parent().next().text();
             currSentence["tags"] = $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
@@ -143,7 +144,26 @@ var SentenceManager = (function () {
     }
 
     function _saveSentence(e) {
-        _hideControlPanel();
+        var currSentenceUuid = currSentence.uuid;
+        delete currSentence.uuid;
+        return;
+        $.ajax({
+            url: 'http://www.langbook.it/api/sentence',
+            method: 'PUT',
+            async: true,
+            contentType: 'application/json',
+            data: JSON.stringify({"sentence": currSentence}),
+            timeout: 1000,
+            success: function (data) {
+                if (data.status === "success") {
+                    _hideControlPanel();
+                    localStorage.setItem('sentences', JSON.stringify({}));
+                    SentenceGenerator.show();
+                }
+            },
+            error: function (msg, error, HTTPErr) {
+            }
+        });
     }
 
     function _addSentence(e) {
@@ -196,7 +216,25 @@ var SentenceManager = (function () {
         e.preventDefault();
 
         if (currSentence) {
-
+            var currSentenceUuid = currSentence.uuid;
+            return;
+            $.ajax({
+                url: 'http://www.langbook.it/api/sentence',
+                method: 'DELETE',
+                async: true,
+                contentType: 'application/json',
+                data: null,
+                timeout: 1000,
+                success: function (data) {
+                    if (data.status === "success") {
+                        _hideControlPanel();
+                        localStorage.setItem('sentences', JSON.stringify({}));
+                        SentenceGenerator.show();
+                    }
+                },
+                error: function (msg, error, HTTPErr) {
+                }
+            });
         } else {
             _hideControlPanel();
         }
