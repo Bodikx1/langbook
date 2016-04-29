@@ -45,7 +45,7 @@ var SentenceGenerator = (function () {
             $.each(restoreSentences.sentences, function (key, val) {
                 var item = $('<li/>', {class: "sentence-elem", uuid: val.uuid}).append(
                     $('<div/>').append(
-                        $('<a/>', {href: "#", text: val.lang1})
+                        $('<a/>', {href: "#add-page", text: val.lang1})
                     ),
                     $('<div/>').append(
                         $('<span/>', {text: val.lang2})
@@ -77,15 +77,12 @@ var SentenceGenerator = (function () {
 
 var SentenceManager = (function () {
     var currSentence = null,
-        addSentenceModal = $('#addSentenceModal'),
         tagsPanel = $('.tags-panel'),
         controlPanel = $('.sentence-control');
 
     function _setUpListners() {
         $(document).on('click', '.addSentence', _setCurrSentence);
         $(document).on('click', '#sentences-list .sentence-elem a', _setCurrSentence);
-        $(document).on('shown.bs.modal', '#addSentenceModal', _showControlPanel);
-        $(document).on('hidden.bs.modal', '#addSentenceModal', _hideControlPanel);
         $(document).on('submit', '.sentence-control form', function (e) {
             e.preventDefault();
 
@@ -98,13 +95,14 @@ var SentenceManager = (function () {
         $(document).on('click', '.tags-panel .addTag', _addTag);
         $(document).on('click', '.tags-panel button:not(.addTag)', _editTag);
         $(document).on('click', '.sentenceDelete', _deleteCurrSentence);
+        $(document).on('click', '.backBtn', _clearControlPanel);
     }
 
     function _showControlPanel() {
         controlPanel.find('textarea[name="language1"]').focus();
     }
 
-    function _hideControlPanel() {
+    function _clearControlPanel() {
         controlPanel.find('form')[0].reset();
         tagsPanel.find(':not(.addTag)').remove();
     }
@@ -112,8 +110,6 @@ var SentenceManager = (function () {
     function _setCurrSentence(e) {
         if (e.target.className.indexOf('addSentence') !== -1) {
             currSentence = null;
-            addSentenceModal.find('.modal-title').text('Add a new sentence');
-            addSentenceModal.modal('show');
             controlPanel.find('textarea[name="language1"]').val(e.target.value);
         } else {
             currSentence = {};
@@ -121,9 +117,6 @@ var SentenceManager = (function () {
             currSentence["lang1"] = e.target.text;
             currSentence["lang2"] = $(this).parent().next().text();
             currSentence["tags"] = $(this).parent().nextAll(':last-child').text() && $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
-
-            addSentenceModal.find('.modal-title').text('Edit sentence');
-            addSentenceModal.modal('show');
 
             controlPanel.find('textarea[name="language1"]').val(currSentence.lang1);
             controlPanel.find('textarea[name="language2"]').val(currSentence.lang2);
@@ -150,7 +143,8 @@ var SentenceManager = (function () {
             timeout: 1000,
             success: function (data) {
                 if (data.status === "success") {
-                    addSentenceModal.modal('hide');
+                    location.href="#";
+                    _clearControlPanel();
                     localStorage.setItem('sentences', JSON.stringify({}));
                     SentenceGenerator.show();
                 }
@@ -177,7 +171,8 @@ var SentenceManager = (function () {
             timeout: 1000,
             success: function (data) {
                 if (data.status === "success") {
-                    addSentenceModal.modal('hide');
+                    location.href="#";
+                    _clearControlPanel();
                     localStorage.setItem('sentences', JSON.stringify({}));
                     SentenceGenerator.show();
                 }
@@ -274,7 +269,8 @@ var SentenceManager = (function () {
                 timeout: 1000,
                 success: function (data) {
                     if (data.status === "success") {
-                        addSentenceModal.modal('hide');
+                        location.href="#";
+                        _clearControlPanel()
                         localStorage.setItem('sentences', JSON.stringify({}));
                         SentenceGenerator.show();
                     }
@@ -283,7 +279,8 @@ var SentenceManager = (function () {
                 }
             });
         } else {
-            addSentenceModal.modal('hide');
+            location.href="#";
+            _clearControlPanel()
         }
     }
 

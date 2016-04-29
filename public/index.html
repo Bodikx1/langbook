@@ -11,14 +11,14 @@
 </head>
 <body>
 
-<div data-role="page" data-theme="a">
+<div id="main-page" data-role="page" data-theme="a">
     <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
         <a data-role="none" href="#" class="pull-left login">Login</a>
         <h1><b>langbook.it</b></h1>
         <div style="background-color: #ddd;padding: 0 1em;" class="ui-content">
             <input id="searchFilter" data-type="search" data-wrapper-class="search-wrap" type="text" class="ui-btn ui-corner-all stretched rounded-borders" placeholder="Search">
         </div>
-        <a data-role="none" href="#" class="pull-right addSentence">Add</a>
+        <a data-role="none" href="#add-page" class="pull-right addSentence">Add</a>
     </div>
     <div role="main">
         <ul id="sentences-list" data-role="listview" data-filter="true" data-input="#searchFilter"></ul>
@@ -27,42 +27,38 @@
     </div>
 </div>
 
-<!-- add sentence modal -->
-<div id="addSentenceModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Add a new sentence</h4>
-            </div>
-            <div class="modal-body">
-                <div class="sentence-control">
-                    <form>
-                        <textarea style="resize: none;" class="stretched rounded-borders" name="language1" placeholder="Language 1"></textarea>
-                        <textarea style="resize: none;" class="stretched rounded-borders" name="language2" placeholder="Language 2"></textarea>
-                        <div class="tags-panel">
-                            <button data-role="none" class="btn tag-btn addTag">Add tag..</button>
+<div id="add-page" data-role="page" data-theme="a">
+    <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
+        <div data-role="navbar">
+            <ul>
+                <li><a role="button" href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left backBtn" data-rel="back">Back</a></li>
+            </ul>
+        </div>
+    </div>
+    <div role="main">
+        <div class="ui-content">
+            <div class="sentence-control">
+                <form>
+                    <textarea style="resize: none;" class="stretched rounded-borders" name="language1" placeholder="Language 1"></textarea>
+                    <textarea style="resize: none;" class="stretched rounded-borders" name="language2" placeholder="Language 2"></textarea>
+                    <div class="tags-panel">
+                        <button data-role="none" class="btn tag-btn addTag">Add tag..</button>
+                    </div>
+                    <div class="ui-grid-solo">
+                        <div class="ui-block-a">
+                            <button type="submit" data-role="none" class="btn btn-success stretched sentenceSave">Save it<br>(correct sentence)</button>
                         </div>
-                        <div class="ui-grid-solo">
-                            <div class="ui-block-a">
-                                <button type="submit" data-role="none" class="btn btn-success stretched sentenceSave">Save it<br>(correct sentence)</button>
-                            </div>
+                    </div>
+                    <div class="ui-grid-solo">
+                        <div class="ui-block-a text-center">
+                            <a class="sentenceDelete" href="#">or remove it</a>
                         </div>
-                        <div class="ui-grid-solo">
-                            <div class="ui-block-a text-center">
-                                <a class="sentenceDelete" href="#">or remove it</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <!--<button type="button" class="btn btn-primary">Add</button>-->
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="/dist/js/app.js"></script>
