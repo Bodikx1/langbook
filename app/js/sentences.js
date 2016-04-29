@@ -112,6 +112,7 @@ var SentenceManager = (function () {
     function _setCurrSentence(e) {
         if (e.target.className.indexOf('addSentence') !== -1) {
             currSentence = null;
+            addSentenceModal.find('.modal-title').text('Add a new sentence');
             addSentenceModal.modal('show');
             controlPanel.find('textarea[name="language1"]').val(e.target.value);
         } else {
@@ -121,6 +122,7 @@ var SentenceManager = (function () {
             currSentence["lang2"] = $(this).parent().next().text();
             currSentence["tags"] = $(this).parent().nextAll(':last-child').text() && $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
 
+            addSentenceModal.find('.modal-title').text('Edit sentence');
             addSentenceModal.modal('show');
 
             controlPanel.find('textarea[name="language1"]').val(currSentence.lang1);
