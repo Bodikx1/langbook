@@ -41,7 +41,7 @@ var SentenceGenerator = (function () {
         $(sentenceList).listview();
         $(sentenceList).empty();
 
-        if (restoreSentences.sentences) {
+        if (restoreSentences && restoreSentences.sentences) {
             $.each(restoreSentences.sentences, function (key, val) {
                 var item = $('<li/>', {class: "sentence-elem", uuid: val.uuid}).append(
                     $('<div/>').append(
