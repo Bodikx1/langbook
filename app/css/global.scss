@@ -18,6 +18,9 @@ div[data-role="header"] {
       margin-right: 5px;
       margin-bottom: 5px;
       outline: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
   }
 

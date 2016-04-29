@@ -191,23 +191,34 @@ var SentenceManager = (function () {
         e.preventDefault();
 
         var self = this,
-            tagBtn = $('<input/>', {style: "width: 100%", class: "btn tag-btn"});
+            tagBtn = $('<input/>', {style: "width: 100%;padding-right: 25px;", class: "btn tag-btn"}),
+            confirmBtn = $('<span/>', {style: "color: white;position: absolute;right: 10px;top: 10px;", class: "glyphicon glyphicon-ok"}),
+            wrapper = $('<div/>', {style: "position: relative;"}).append(
+                confirmBtn,
+                tagBtn
+            ),
+            replaceWithBtn = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-        tagBtn.insertBefore(self);
+                if (e.target.tagName === "INPUT" && e.keyCode === 13 || e.target.tagName === "SPAN") {
+                    if ($.trim(tagBtn.val())) {
+                        wrapper.replaceWith($('<button/>', {
+                            "data-role": "none",
+                            class: "btn tag-btn",
+                            text: $.trim(tagBtn.val())
+                        }));
+                    } else {
+                        wrapper.remove();
+                    }
+                }
+            };
+
+        wrapper.insertBefore(self);
         tagBtn.focus();
 
-        tagBtn.on('blur', function(e) {
-            if ($.trim(tagBtn.val())) {
-                tagBtn.replaceWith($('<button/>', {
-                    "data-role": "none",
-                    class: "btn tag-btn",
-                    text: $.trim(tagBtn.val())
-                }));
-                tagBtn.off('blur');
-            } else {
-                tagBtn.remove();
-            }
-        });
+        confirmBtn.one('click', replaceWithBtn);
+        tagBtn.one('keydown', replaceWithBtn);
     }
 
     function _editTag(e) {
@@ -218,23 +229,34 @@ var SentenceManager = (function () {
                 style: "width: 100%",
                 class: "btn tag-btn",
                 value: self.text()
-            });
+            }),
+            confirmBtn = $('<span/>', {style: "color: white;position: absolute;right: 10px;top: 10px;", class: "glyphicon glyphicon-ok"}),
+            wrapper = $('<div/>', {style: "position: relative;"}).append(
+                confirmBtn,
+                tagBtn
+            ),
+            replaceWithBtn = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-        self.replaceWith(tagBtn);
+                if (e.target.tagName === "INPUT" && e.keyCode === 13 || e.target.tagName === "SPAN") {
+                    if ($.trim(tagBtn.val())) {
+                        wrapper.replaceWith($('<button/>', {
+                            "data-role": "none",
+                            class: "btn tag-btn",
+                            text: $.trim(tagBtn.val())
+                        }));
+                    } else {
+                        wrapper.remove();
+                    }
+                }
+            };
+
+        self.replaceWith(wrapper);
         tagBtn.focus();
 
-        tagBtn.on('blur', function(e) {
-            if ($.trim(tagBtn.val())) {
-                tagBtn.replaceWith($('<button/>', {
-                    "data-role": "none",
-                    class: "btn tag-btn",
-                    text: $.trim(tagBtn.val())
-                }));
-                tagBtn.off('blur');
-            } else {
-                tagBtn.remove();
-            }
-        });
+        confirmBtn.one('click', replaceWithBtn);
+        tagBtn.one('keydown', replaceWithBtn);
     }
 
     function _deleteCurrSentence(e) {
