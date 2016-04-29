@@ -1,39 +1,37 @@
 div[data-role="header"] {
-  .login {
-    padding: .8em 0;
+  .login,
+  .addSentence {
+    padding: .4em 0;
     font-weight: normal
   }
 }
 
-div[data-role="footer"] {
-  .sentence-control {
-    display: none;
+.sentence-control {
 
-    .tags-panel {
-      .tag-btn {
-        color: white;
-        background-color: #999;
-        -webkit-border-radius: 8px;
-        -moz-border-radius: 8px;
-        border-radius: 8px;
-        margin-right: 5px;
-        margin-bottom: 5px;
-        outline: none;
-      }
-    }
-
-    .sentenceDelete {
-      color: darkgray;
-      text-decoration: underline;
-      margin-bottom: 10px;
-      display: block;
-    }
-
-    .sentenceSave {
-      margin: 20px 0px;
+  .tags-panel {
+    .tag-btn {
+      color: white;
+      background-color: #999;
       -webkit-border-radius: 8px;
       -moz-border-radius: 8px;
       border-radius: 8px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      outline: none;
     }
+  }
+
+  .sentenceDelete {
+    color: darkgray;
+    text-decoration: underline;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .sentenceSave {
+    margin: 20px 0px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
   }
 }

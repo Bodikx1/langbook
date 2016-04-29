@@ -23,7 +23,6 @@ var SentenceGenerator = (function () {
             timeout: 1000,
             success: function (data) {
                 if (data.status === "success") {
-                    data.sentences[0].tags = ["tag1","tag2","tag3"];
                     localStorage.setItem('sentences', JSON.stringify({
                         "sentences": data.sentences
                     }));
@@ -78,13 +77,15 @@ var SentenceGenerator = (function () {
 
 var SentenceManager = (function () {
     var currSentence = null,
-        sentenceAddInput = $('.sentenceAdd'),
+        addSentenceModal = $('#addSentenceModal'),
         tagsPanel = $('.tags-panel'),
         controlPanel = $('.sentence-control');
 
     function _setUpListners() {
-        $(document).on('keyup', '.sentenceAdd', _setCurrSentence);
+        $(document).on('click', '.addSentence', _setCurrSentence);
         $(document).on('click', '#sentences-list .sentence-elem a', _setCurrSentence);
+        $(document).on('shown.bs.modal', '#addSentenceModal', _showControlPanel);
+        $(document).on('hidden.bs.modal', '#addSentenceModal', _hideControlPanel);
         $(document).on('submit', '.sentence-control form', function (e) {
             e.preventDefault();
 
@@ -100,37 +101,27 @@ var SentenceManager = (function () {
     }
 
     function _showControlPanel() {
-        !controlPanel.is(':animated') && controlPanel.fadeIn(500, function() {
-            sentenceAddInput.parent().hide();
-            controlPanel.find('textarea[name="language1"]').focus();
-        });
+        controlPanel.find('textarea[name="language1"]').focus();
     }
 
     function _hideControlPanel() {
-        !controlPanel.is(':animated') && controlPanel.fadeOut(500, function() {
-            sentenceAddInput.parent().show();
-            controlPanel.find('form')[0].reset();
-            tagsPanel.find(':not(.addTag)').remove();
-            sentenceAddInput.val('');
-            sentenceAddInput.focus();
-        });
+        controlPanel.find('form')[0].reset();
+        tagsPanel.find(':not(.addTag)').remove();
     }
 
     function _setCurrSentence(e) {
-        if (e.target.type === "text") {
+        if (e.target.className.indexOf('addSentence') !== -1) {
             currSentence = null;
-            _showControlPanel();
+            addSentenceModal.modal('show');
             controlPanel.find('textarea[name="language1"]').val(e.target.value);
-        }
-
-        if (e.target.tagName === "A") {
+        } else {
             currSentence = {};
             currSentence["uuid"] = $(this).closest('li').attr('uuid');
             currSentence["lang1"] = e.target.text;
             currSentence["lang2"] = $(this).parent().next().text();
-            currSentence["tags"] = $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
+            currSentence["tags"] = $(this).parent().nextAll(':last-child').text() && $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
 
-            _showControlPanel();
+            addSentenceModal.modal('show');
 
             controlPanel.find('textarea[name="language1"]').val(currSentence.lang1);
             controlPanel.find('textarea[name="language2"]').val(currSentence.lang2);
@@ -157,7 +148,7 @@ var SentenceManager = (function () {
             timeout: 1000,
             success: function (data) {
                 if (data.status === "success") {
-                    _hideControlPanel();
+                    addSentenceModal.modal('hide');
                     localStorage.setItem('sentences', JSON.stringify({}));
                     SentenceGenerator.show();
                 }
@@ -184,7 +175,7 @@ var SentenceManager = (function () {
             timeout: 1000,
             success: function (data) {
                 if (data.status === "success") {
-                    _hideControlPanel();
+                    addSentenceModal.modal('hide');
                     localStorage.setItem('sentences', JSON.stringify({}));
                     SentenceGenerator.show();
                 }
@@ -259,7 +250,7 @@ var SentenceManager = (function () {
                 timeout: 1000,
                 success: function (data) {
                     if (data.status === "success") {
-                        _hideControlPanel();
+                        addSentenceModal.modal('hide');
                         localStorage.setItem('sentences', JSON.stringify({}));
                         SentenceGenerator.show();
                     }
@@ -268,7 +259,7 @@ var SentenceManager = (function () {
                 }
             });
         } else {
-            _hideControlPanel();
+            addSentenceModal.modal('hide');
         }
     }
 
