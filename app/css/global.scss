@@ -10,6 +10,10 @@ div[data-role="header"] {
 
   .tags-panel {
     .tag-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      border: 0;
+
       color: white;
       background-color: #999;
       -webkit-border-radius: 8px;
@@ -21,11 +25,6 @@ div[data-role="header"] {
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
-
-      -webkit-user-select: initial;
-      -moz-user-select: initial;
-      -ms-user-select: initial;
-      user-select: initial;
     }
   }
 

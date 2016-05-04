@@ -123,7 +123,7 @@ var SentenceManager = (function () {
             for (var i=0;currSentence.tags && i < currSentence.tags.length; i++) {
                 $('<button/>', {
                     "data-role": "none",
-                    class: "btn tag-btn",
+                    class: "tag-btn",
                     text: currSentence.tags[i]
                 }).insertBefore(tagsPanel.find('.addTag'));
             }
@@ -186,7 +186,7 @@ var SentenceManager = (function () {
         e.preventDefault();
 
         var self = this,
-            tagBtn = $('<input/>', {type: "text", value: "", style: "width: 100%;padding-right: 25px;", class: "btn tag-btn"}),
+            tagBtn = $('<input/>', {type: "text", value: "", style: "width: 100%;padding-right: 25px;", class: "tag-btn"}),
             confirmBtn = $('<span/>', {style: "color: white;position: absolute;right: 10px;top: 10px;", class: "glyphicon glyphicon-ok"}),
             wrapper = $('<div/>', {style: "position: relative;"}).append(
                 confirmBtn,
@@ -200,7 +200,7 @@ var SentenceManager = (function () {
                     if ($.trim(tagBtn.val())) {
                         wrapper.replaceWith($('<button/>', {
                             "data-role": "none",
-                            class: "btn tag-btn",
+                            class: "tag-btn",
                             text: $.trim(tagBtn.val())
                         }));
                     } else {
@@ -223,7 +223,7 @@ var SentenceManager = (function () {
             tagBtn = $('<input/>', {
                 type: "text",
                 style: "width: 100%",
-                class: "btn tag-btn",
+                class: "tag-btn",
                 value: self.text()
             }),
             confirmBtn = $('<span/>', {style: "color: white;position: absolute;right: 10px;top: 10px;", class: "glyphicon glyphicon-ok"}),
@@ -239,7 +239,7 @@ var SentenceManager = (function () {
                     if ($.trim(tagBtn.val())) {
                         wrapper.replaceWith($('<button/>', {
                             "data-role": "none",
-                            class: "btn tag-btn",
+                            class: "tag-btn",
                             text: $.trim(tagBtn.val())
                         }));
                     } else {
