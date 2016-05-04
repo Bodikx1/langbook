@@ -21,6 +21,11 @@ div[data-role="header"] {
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
+
+      -webkit-user-select: initial;
+      -moz-user-select: initial;
+      -ms-user-select: initial;
+      user-select: initial;
     }
   }
 
