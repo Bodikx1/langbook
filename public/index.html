@@ -13,7 +13,7 @@
 
 <div id="main-page" data-role="page" data-theme="a">
     <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
-        <a data-role="none" href="#" class="pull-left login">Login</a>
+        <a data-role="none" href="#" class="pull-left login toggleActions">Edit</a>
         <h1><b>langbook.it</b></h1>
         <div style="background-color: #ddd;padding: 0 1em;" class="ui-content">
             <input id="searchFilter" data-type="search" data-wrapper-class="search-wrap" type="text" class="ui-corner-all stretched rounded-borders" placeholder="Search">
@@ -55,6 +55,33 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="delete-confirm-page" data-role="page" data-theme="a">
+    <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
+        <div data-role="navbar">
+            <ul>
+                <li><a role="button" href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left backBtn" data-rel="back">Back</a></li>
+            </ul>
+        </div>
+    </div>
+    <div role="main">
+        <div class="ui-content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1 class="text-center">Are you sure?</h1><br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <a style="color: white;" href="#" class="btn btn-success confirmDelete">Confirm</a>
+                </div>
+                <div class="col-xs-6">
+                    <a style="color: white;" href="#main-page" class="btn btn-info pull-right">Cancel</a>
+                </div>
             </div>
         </div>
     </div>

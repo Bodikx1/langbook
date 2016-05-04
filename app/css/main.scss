@@ -1,0 +1,31 @@
+#sentences-list {
+  .sentence-elem {
+    display: table;
+    width: 100%;
+    padding: 0;
+
+    .col {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 10px;
+    }
+
+    .col.action {
+      display: none;
+      width: 15%;
+      background: gray;
+
+      a {
+        color: lightgray;
+        text-shadow: none;
+        font-weight: normal;
+      }
+    }
+  }
+
+  .sentence-elem.show-actions {
+    .col.action {
+      display: table-cell;
+    }
+  }
+}

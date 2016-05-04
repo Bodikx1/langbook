@@ -44,14 +44,22 @@ var SentenceGenerator = (function () {
         if (restoreSentences && restoreSentences.sentences) {
             $.each(restoreSentences.sentences, function (key, val) {
                 var item = $('<li/>', {class: "sentence-elem", uuid: val.uuid}).append(
-                    $('<div/>').append(
-                        $('<a/>', {href: "#add-page", text: val.lang1})
+                    $('<div/>', {class: "col"}).append(
+                        $('<div/>').append(
+                            $('<a/>', {class: "editSentence", href: "#add-page", text: val.lang1})
+                        ),
+                        $('<div/>').append(
+                            $('<span/>', {text: val.lang2})
+                        ),
+                        $('<div/>').append(
+                            $('<span/>', {text: _tagsWrapper(val.tags)})
+                        )
                     ),
-                    $('<div/>').append(
-                        $('<span/>', {text: val.lang2})
+                    $('<div/>', {class: "col action"}).append(
+                        $('<a/>', {class: "edit", text: "Edit", href: "#"})
                     ),
-                    $('<div/>').append(
-                        $('<span/>', {text: _tagsWrapper(val.tags)})
+                    $('<div/>', {class: "col action"}).append(
+                        $('<a/>', {class: "delete", text: "Delete", href: "#delete-confirm-page"})
                     )
                 );
                 $(sentenceList).append(item);
@@ -81,8 +89,11 @@ var SentenceManager = (function () {
         controlPanel = $('.sentence-control');
 
     function _setUpListners() {
-        $(document).on('click', '.addSentence', _setCurrSentence);
-        $(document).on('click', '#sentences-list .sentence-elem a', _setCurrSentence);
+        $(document).on('click', '.addSentence', _addNewSentence);
+        $(document).on('click', '.toggleActions', function() {
+            $('#sentences-list .sentence-elem').toggleClass('show-actions');
+        });
+        $(document).on('click', '#sentences-list .sentence-elem a.editSentence', _setCurrSentence);
         $(document).on('submit', '.sentence-control form', function (e) {
             e.preventDefault();
 
@@ -92,14 +103,17 @@ var SentenceManager = (function () {
                 _addSentence(e);
             }
         });
+        $(document).on('click', '#sentences-list .sentence-elem a.edit', function (e) {
+            e.preventDefault();
+
+            $(this).closest('li').find('a.editSentence').trigger('click');
+        });
+        $(document).on('click', '#sentences-list .sentence-elem a.delete', _showDeleteModal);
+        $(document).on('click', '#delete-confirm-page .btn.confirmDelete', _confirmDeleteModal);
         $(document).on('click', '.tags-panel .addTag', _addTag);
         $(document).on('click', '.tags-panel button:not(.addTag)', _editTag);
         $(document).on('click', '.sentenceDelete', _deleteCurrSentence);
         $(document).on('click', '.backBtn', _clearControlPanel);
-    }
-
-    function _showControlPanel() {
-        controlPanel.find('textarea[name="language1"]').focus();
     }
 
     function _clearControlPanel() {
@@ -107,51 +121,65 @@ var SentenceManager = (function () {
         tagsPanel.find(':not(.addTag)').remove();
     }
 
-    function _setCurrSentence(e) {
-        if (e.target.className.indexOf('addSentence') !== -1) {
-            currSentence = null;
-            controlPanel.find('textarea[name="language1"]').val(e.target.value);
-        } else {
-            currSentence = {};
-            currSentence["uuid"] = $(this).closest('li').attr('uuid');
-            currSentence["lang1"] = e.target.text;
-            currSentence["lang2"] = $(this).parent().next().text();
-            currSentence["tags"] = $(this).parent().nextAll(':last-child').text() && $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
+    function _addNewSentence(e) {
+        currSentence = null;
+        controlPanel.find('textarea[name="language1"]').val(e.target.value);
+    }
 
-            controlPanel.find('textarea[name="language1"]').val(currSentence.lang1);
-            controlPanel.find('textarea[name="language2"]').val(currSentence.lang2);
-            for (var i=0;currSentence.tags && i < currSentence.tags.length; i++) {
-                $('<button/>', {
-                    "data-role": "none",
-                    class: "tag-btn",
-                    text: currSentence.tags[i]
-                }).insertBefore(tagsPanel.find('.addTag'));
-            }
+    function _setCurrUuid() {
+        currSentence = {};
+        currSentence["uuid"] = $(this).closest('li').attr('uuid');
+    }
+
+    function _setCurrSentence(e) {
+        _setCurrUuid.call(this);
+        currSentence["lang1"] = $(this).text();
+        currSentence["lang2"] = $(this).parent().next().text();
+        currSentence["tags"] = $(this).parent().nextAll(':last-child').text() && $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
+
+        controlPanel.find('textarea[name="language1"]').val(currSentence.lang1);
+        controlPanel.find('textarea[name="language2"]').val(currSentence.lang2);
+        for (var i=0;currSentence.tags && i < currSentence.tags.length; i++) {
+            $('<button/>', {
+                "data-role": "none",
+                class: "tag-btn",
+                text: currSentence.tags[i]
+            }).insertBefore(tagsPanel.find('.addTag'));
         }
     }
 
     function _saveSentence(e) {
-        var currSentenceUuid = currSentence.uuid;
+        var currSentenceUuid = currSentence && currSentence.uuid;
         delete currSentence.uuid;
-        return;
-        $.ajax({
-            url: 'http://www.langbook.it/api/sentence',
-            method: 'PUT',
-            async: true,
-            contentType: 'application/json',
-            data: JSON.stringify({"sentence": currSentence}),
-            timeout: 1000,
-            success: function (data) {
-                if (data.status === "success") {
-                    location.href="#";
-                    _clearControlPanel();
-                    localStorage.setItem('sentences', JSON.stringify({}));
-                    SentenceGenerator.show();
+
+        currSentence["lang1"] = controlPanel.find('textarea[name="language1"]').val();
+        currSentence["lang2"] = controlPanel.find('textarea[name="language2"]').val();
+        currSentence["tags"] = [].join.call(tagsPanel.find(':not(.addTag)').map(function() {
+            return $(this).text();
+        }), ',');
+
+        if(currSentenceUuid) {
+            $.ajax({
+                url: 'http://www.langbook.it/api/sentence/'+currSentenceUuid,
+                method: 'PUT',
+                async: true,
+                contentType: 'application/json',
+                data: JSON.stringify({"sentence": currSentence}),
+                timeout: 1000,
+                success: function (data) {
+                    if (data.status === "success") {
+                        location.hash="#";
+                        _clearControlPanel();
+                        localStorage.setItem('sentences', JSON.stringify({}));
+                        SentenceGenerator.show();
+                    }
+                },
+                error: function (msg, error, HTTPErr) {
                 }
-            },
-            error: function (msg, error, HTTPErr) {
-            }
-        });
+            });
+        } else {
+            location.hash="#";
+        }
     }
 
     function _addSentence(e) {
@@ -171,7 +199,7 @@ var SentenceManager = (function () {
             timeout: 1000,
             success: function (data) {
                 if (data.status === "success") {
-                    location.href="#";
+                    location.hash="#";
                     _clearControlPanel();
                     localStorage.setItem('sentences', JSON.stringify({}));
                     SentenceGenerator.show();
@@ -259,10 +287,10 @@ var SentenceManager = (function () {
         e.preventDefault();
 
         if (currSentence) {
-            var currSentenceUuid = currSentence.uuid;
-            return;
+            var currUuid = currSentence.uuid;
+
             $.ajax({
-                url: 'http://www.langbook.it/api/sentence',
+                url: 'http://www.langbook.it/api/sentence/'+currUuid,
                 method: 'DELETE',
                 async: true,
                 contentType: 'application/json',
@@ -270,7 +298,7 @@ var SentenceManager = (function () {
                 timeout: 1000,
                 success: function (data) {
                     if (data.status === "success") {
-                        location.href="#";
+                        location.hash="#";
                         _clearControlPanel()
                         localStorage.setItem('sentences', JSON.stringify({}));
                         SentenceGenerator.show();
@@ -280,8 +308,41 @@ var SentenceManager = (function () {
                 }
             });
         } else {
-            location.href="#";
-            _clearControlPanel()
+            location.hash="#";
+            _clearControlPanel();
+        }
+    }
+
+    function _showDeleteModal(e) {
+        _setCurrUuid.call(this);
+    }
+
+    function _confirmDeleteModal(e) {
+        e.preventDefault();
+
+        var currUuid = currSentence && currSentence.uuid;
+
+        if (currUuid) {
+            $.ajax({
+                url: 'http://www.langbook.it/api/sentence/'+currUuid,
+                method: 'DELETE',
+                async: true,
+                contentType: 'application/json',
+                data: null,
+                timeout: 1000,
+                success: function (data) {
+                    if (data.status === "success") {
+                        location.hash="#";
+                        _clearControlPanel()
+                        localStorage.setItem('sentences', JSON.stringify({}));
+                        SentenceGenerator.show();
+                    }
+                },
+                error: function (msg, error, HTTPErr) {
+                }
+            });
+        } else {
+            location.hash="#";
         }
     }
 
