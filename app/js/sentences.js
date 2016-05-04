@@ -186,7 +186,7 @@ var SentenceManager = (function () {
         e.preventDefault();
 
         var self = this,
-            tagBtn = $('<input/>', {style: "width: 100%;padding-right: 25px;", class: "btn tag-btn"}),
+            tagBtn = $('<input/>', {type: "text", value: "", style: "width: 100%;padding-right: 25px;", class: "btn tag-btn"}),
             confirmBtn = $('<span/>', {style: "color: white;position: absolute;right: 10px;top: 10px;", class: "glyphicon glyphicon-ok"}),
             wrapper = $('<div/>', {style: "position: relative;"}).append(
                 confirmBtn,
@@ -221,6 +221,7 @@ var SentenceManager = (function () {
 
         var self = $(this),
             tagBtn = $('<input/>', {
+                type: "text",
                 style: "width: 100%",
                 class: "btn tag-btn",
                 value: self.text()
