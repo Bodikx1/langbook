@@ -13,12 +13,12 @@
 
 <div id="main-page" data-role="page" data-theme="a">
     <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
-        <a data-role="none" href="#" class="pull-left login toggleActions">Edit</a>
+        <a data-role="none" href="#" class="pull-left login js-toggle-actions">Edit</a>
         <h1><b>langbook.it</b></h1>
         <div style="background-color: #ddd;padding: 0 1em;" class="ui-content">
             <input id="searchFilter" data-type="search" data-wrapper-class="search-wrap" type="text" class="ui-corner-all stretched rounded-borders" placeholder="Search">
         </div>
-        <a data-role="none" href="#add-page" class="pull-right addSentence">Add</a>
+        <a data-role="none" href="#add-page" class="pull-right js-add-sentence">Add</a>
     </div>
     <div role="main">
         <ul id="sentences-list" data-role="listview" data-filter="true" data-input="#searchFilter"></ul>
@@ -31,7 +31,7 @@
     <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
         <div data-role="navbar">
             <ul>
-                <li><a role="button" href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left backBtn" data-rel="back">Back</a></li>
+                <li><a role="button" href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left js-back-btn" data-rel="back">Back</a></li>
             </ul>
         </div>
     </div>
@@ -42,7 +42,7 @@
                     <textarea style="resize: none;" class="stretched rounded-borders" name="language1" placeholder="Language 1"></textarea>
                     <textarea style="resize: none;" class="stretched rounded-borders" name="language2" placeholder="Language 2"></textarea>
                     <div class="tags-panel">
-                        <button data-role="none" class="btn tag-btn addTag">Add tag..</button>
+                        <button data-role="none" class="btn tag-btn js-add-tag">Add tag..</button>
                     </div>
                     <div class="ui-grid-solo">
                         <div class="ui-block-a">
@@ -51,7 +51,7 @@
                     </div>
                     <div class="ui-grid-solo">
                         <div class="ui-block-a text-center">
-                            <a class="sentenceDelete" href="#">or remove it</a>
+                            <a class="js-delete-sentence" href="#">or remove it</a>
                         </div>
                     </div>
                 </form>
@@ -64,7 +64,7 @@
     <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
         <div data-role="navbar">
             <ul>
-                <li><a role="button" href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left backBtn" data-rel="back">Back</a></li>
+                <li><a role="button" href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left js-back-btn" data-rel="back">Back</a></li>
             </ul>
         </div>
     </div>
@@ -77,7 +77,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-6">
-                    <a style="color: white;" href="#" class="btn btn-success confirmDelete">Confirm</a>
+                    <a style="color: white;" href="#" class="btn btn-success js-confirm-delete">Confirm</a>
                 </div>
                 <div class="col-xs-6">
                     <a style="color: white;" href="#main-page" class="btn btn-info pull-right">Cancel</a>

@@ -46,7 +46,7 @@ var SentenceGenerator = (function () {
                 var item = $('<li/>', {class: "sentence-elem", uuid: val.uuid}).append(
                     $('<div/>', {class: "col"}).append(
                         $('<div/>').append(
-                            $('<a/>', {class: "editSentence", href: "#add-page", text: val.lang1})
+                            $('<a/>', {class: "js-edit-sentence", href: "#add-page", text: val.lang1})
                         ),
                         $('<div/>').append(
                             $('<span/>', {text: val.lang2})
@@ -56,10 +56,10 @@ var SentenceGenerator = (function () {
                         )
                     ),
                     $('<div/>', {class: "col action"}).append(
-                        $('<a/>', {class: "edit", text: "Edit", href: "#"})
+                        $('<a/>', {class: "js-edit", text: "Edit", href: "#"})
                     ),
                     $('<div/>', {class: "col action"}).append(
-                        $('<a/>', {class: "delete", text: "Delete", href: "#delete-confirm-page"})
+                        $('<a/>', {class: "js-delete", text: "Delete", href: "#delete-confirm-page"})
                     )
                 );
                 $(sentenceList).append(item);
@@ -89,11 +89,11 @@ var SentenceManager = (function () {
         controlPanel = $('.sentence-control');
 
     function _setUpListners() {
-        $(document).on('click', '.addSentence', _addNewSentence);
-        $(document).on('click', '.toggleActions', function() {
+        $(document).on('click', '.js-add-sentence', _addNewSentence);
+        $(document).on('click', '.js-toggle-actions', function() {
             $('#sentences-list .sentence-elem').toggleClass('show-actions');
         });
-        $(document).on('click', '#sentences-list .sentence-elem a.editSentence', _setCurrSentence);
+        $(document).on('click', '.js-edit-sentence', _setCurrSentence);
         $(document).on('submit', '.sentence-control form', function (e) {
             e.preventDefault();
 
@@ -103,22 +103,22 @@ var SentenceManager = (function () {
                 _addSentence(e);
             }
         });
-        $(document).on('click', '#sentences-list .sentence-elem a.edit', function (e) {
+        $(document).on('click', '.js-edit', function (e) {
             e.preventDefault();
 
-            $(this).closest('li').find('a.editSentence').trigger('click');
+            $(this).closest('li').find('a.js-edit-sentence').trigger('click');
         });
-        $(document).on('click', '#sentences-list .sentence-elem a.delete', _showDeleteModal);
-        $(document).on('click', '#delete-confirm-page .btn.confirmDelete', _confirmDeleteModal);
-        $(document).on('click', '.tags-panel .addTag', _addTag);
-        $(document).on('click', '.tags-panel button:not(.addTag)', _editTag);
-        $(document).on('click', '.sentenceDelete', _deleteCurrSentence);
-        $(document).on('click', '.backBtn', _clearControlPanel);
+        $(document).on('click', '.js-delete', _showDeleteModal);
+        $(document).on('click', '.js-confirm-delete', _confirmDeleteModal);
+        $(document).on('click', '.js-add-tag', _addTag);
+        $(document).on('click', '.tags-panel button:not(.js-add-tag)', _editTag);
+        $(document).on('click', '.js-delete-sentence', _deleteCurrSentence);
+        $(document).on('click', '.js-back-btn', _clearControlPanel);
     }
 
     function _clearControlPanel() {
         controlPanel.find('form')[0].reset();
-        tagsPanel.find(':not(.addTag)').remove();
+        tagsPanel.find(':not(.js-add-tag)').remove();
     }
 
     function _addNewSentence(e) {
@@ -144,7 +144,7 @@ var SentenceManager = (function () {
                 "data-role": "none",
                 class: "tag-btn",
                 text: currSentence.tags[i]
-            }).insertBefore(tagsPanel.find('.addTag'));
+            }).insertBefore(tagsPanel.find('.js-add-tag'));
         }
     }
 
@@ -154,7 +154,7 @@ var SentenceManager = (function () {
 
         currSentence["lang1"] = controlPanel.find('textarea[name="language1"]').val();
         currSentence["lang2"] = controlPanel.find('textarea[name="language2"]').val();
-        currSentence["tags"] = [].join.call(tagsPanel.find(':not(.addTag)').map(function() {
+        currSentence["tags"] = [].join.call(tagsPanel.find(':not(.js-add-tag)').map(function() {
             return $(this).text();
         }), ',');
 
@@ -186,7 +186,7 @@ var SentenceManager = (function () {
         currSentence = {};
         currSentence["lang1"] = controlPanel.find('textarea[name="language1"]').val();
         currSentence["lang2"] = controlPanel.find('textarea[name="language2"]').val();
-        currSentence["tags"] = [].join.call(tagsPanel.find(':not(.addTag)').map(function() {
+        currSentence["tags"] = [].join.call(tagsPanel.find(':not(.js-add-tag)').map(function() {
             return $(this).text();
         }), ',');
 
