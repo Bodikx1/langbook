@@ -218,8 +218,8 @@ var SentenceManager = (function () {
         e.preventDefault();
 
         var self = this,
-            tagBtn = $('<input/>', {type: "text", value: "", style: "width: 100%;padding-right: 25px;", class: "tag-btn"}),
-            confirmBtn = $('<span/>', {style: "color: white;position: absolute;right: 10px;top: 10px;", class: "glyphicon glyphicon-ok"}),
+            tagBtn = $('<input/>', {type: "text", value: "", style: "width: 90%;", class: "tag-btn"}),
+            confirmBtn = $('<span/>', {style: "color: lightgreen;position: absolute;right: 10px;top: 10px;", class: "glyphicon glyphicon-ok"}),
             wrapper = $('<div/>', {style: "position: relative;"}).append(
                 confirmBtn,
                 tagBtn
@@ -254,11 +254,11 @@ var SentenceManager = (function () {
         var self = $(this),
             tagBtn = $('<input/>', {
                 type: "text",
-                style: "width: 100%",
+                style: "width: 90%",
                 class: "tag-btn",
                 value: self.text()
             }),
-            confirmBtn = $('<span/>', {style: "color: white;position: absolute;right: 10px;top: 10px;", class: "glyphicon glyphicon-ok"}),
+            confirmBtn = $('<span/>', {style: "color: lightgreen;position: absolute;right: 10px;top: 10px;", class: "glyphicon glyphicon-ok"}),
             wrapper = $('<div/>', {style: "position: relative;"}).append(
                 confirmBtn,
                 tagBtn
