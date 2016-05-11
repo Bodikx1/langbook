@@ -86,7 +86,8 @@ var SentenceGenerator = (function () {
 var SentenceManager = (function () {
     var currSentence = null,
         tagsPanel = $('.tags-panel'),
-        controlPanel = $('.sentence-control');
+        controlPanel = $('.sentence-control'),
+        deleteConfirmModal = $('#delete-confirm-modal');
 
     function _setUpListners() {
         $(document).on('click', '.js-add-sentence', _addNewSentence);
@@ -110,6 +111,9 @@ var SentenceManager = (function () {
         });
         $(document).on('click', '.js-delete', _showDeleteModal);
         $(document).on('click', '.js-confirm-delete', _confirmDeleteModal);
+        $(document).on('click', '.js-cancel-delete', function (e) {
+            deleteConfirmModal.modal('hide');
+        });
         $(document).on('click', '.js-add-tag', _addTag);
         $(document).on('click', '.tags-panel button:not(.js-add-tag)', _editTag);
         $(document).on('click', '.js-delete-sentence', _deleteCurrSentence);
@@ -315,6 +319,7 @@ var SentenceManager = (function () {
 
     function _showDeleteModal(e) {
         _setCurrUuid.call(this);
+        deleteConfirmModal.modal('show');
     }
 
     function _confirmDeleteModal(e) {
@@ -332,7 +337,7 @@ var SentenceManager = (function () {
                 timeout: 1000,
                 success: function (data) {
                     if (data.status === "success") {
-                        location.hash="#";
+                        deleteConfirmModal.modal('hide');
                         _clearControlPanel()
                         localStorage.setItem('sentences', JSON.stringify({}));
                         SentenceGenerator.show();
