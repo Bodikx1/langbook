@@ -20,7 +20,7 @@ var SentenceGenerator = (function () {
             method: 'GET',
             async: true,
             data: null,
-            timeout: 1000,
+            timeout: 10000,
             success: function (data) {
                 if (data.status === "success") {
                     localStorage.setItem('sentences', JSON.stringify({
@@ -30,6 +30,7 @@ var SentenceGenerator = (function () {
                 }
             },
             error: function (msg, error, HTTPErr) {
+                location.hash="#";
             }
         });
     }
@@ -87,7 +88,28 @@ var SentenceManager = (function () {
     var currSentence = null,
         tagsPanel = $('.tags-panel'),
         controlPanel = $('.sentence-control'),
-        deleteConfirmModal = $('#delete-confirm-modal');
+        deleteConfirmModal = $('#delete-confirm-modal'),
+        ajaxOptions = {
+            async: true,
+            contentType: 'application/json',
+            data: null,
+            timeout: 10000,
+            success: function (data) {
+                if (data.status === "success") {
+                    _refreshList();
+                }
+            },
+            error: function (msg, error, HTTPErr) {
+                location.hash="#";
+            }
+        };
+
+    function _refreshList() {
+        _clearControlPanel();
+        localStorage.setItem('sentences', JSON.stringify({}));
+        SentenceGenerator.show();
+        location.hash="#";
+    }
 
     function _setUpListners() {
         $(document).on('click', '.js-add-sentence', _addNewSentence);
@@ -163,24 +185,12 @@ var SentenceManager = (function () {
         }), ',');
 
         if(currSentenceUuid) {
-            $.ajax({
+            $.extend(ajaxOptions, {
                 url: 'http://www.langbook.it/api/sentence/'+currSentenceUuid,
                 method: 'PUT',
-                async: true,
-                contentType: 'application/json',
                 data: JSON.stringify({"sentence": currSentence}),
-                timeout: 1000,
-                success: function (data) {
-                    if (data.status === "success") {
-                        _clearControlPanel();
-                        localStorage.setItem('sentences', JSON.stringify({}));
-                        SentenceGenerator.show();
-                        location.hash="#";
-                    }
-                },
-                error: function (msg, error, HTTPErr) {
-                }
             });
+            $.ajax(ajaxOptions);
         } else {
             location.hash="#";
         }
@@ -194,24 +204,12 @@ var SentenceManager = (function () {
             return $(this).text();
         }), ',');
 
-        $.ajax({
+        $.extend(ajaxOptions, {
             url: 'http://www.langbook.it/api/sentence',
             method: 'POST',
-            async: true,
-            contentType: 'application/json',
             data: JSON.stringify({"sentence": currSentence}),
-            timeout: 1000,
-            success: function (data) {
-                if (data.status === "success") {
-                    _clearControlPanel();
-                    localStorage.setItem('sentences', JSON.stringify({}));
-                    SentenceGenerator.show();
-                    location.hash="#";
-                }
-            },
-            error: function (msg, error, HTTPErr) {
-            }
         });
+        $.ajax(ajaxOptions);
     }
 
     function _addTag(e) {
@@ -293,24 +291,11 @@ var SentenceManager = (function () {
         if (currSentence) {
             var currUuid = currSentence.uuid;
 
-            $.ajax({
+            $.extend(ajaxOptions, {
                 url: 'http://www.langbook.it/api/sentence/'+currUuid,
-                method: 'DELETE',
-                async: true,
-                contentType: 'application/json',
-                data: null,
-                timeout: 1000,
-                success: function (data) {
-                    if (data.status === "success") {
-                        _clearControlPanel()
-                        localStorage.setItem('sentences', JSON.stringify({}));
-                        SentenceGenerator.show();
-                        location.hash="#";
-                    }
-                },
-                error: function (msg, error, HTTPErr) {
-                }
+                method: 'DELETE'
             });
+            $.ajax(ajaxOptions);
         } else {
             _clearControlPanel();
             location.hash="#";
@@ -328,24 +313,17 @@ var SentenceManager = (function () {
         var currUuid = currSentence && currSentence.uuid;
 
         if (currUuid) {
-            $.ajax({
+            $.extend(ajaxOptions, {
                 url: 'http://www.langbook.it/api/sentence/'+currUuid,
                 method: 'DELETE',
-                async: true,
-                contentType: 'application/json',
-                data: null,
-                timeout: 1000,
                 success: function (data) {
                     if (data.status === "success") {
                         deleteConfirmModal.modal('hide');
-                        _clearControlPanel()
-                        localStorage.setItem('sentences', JSON.stringify({}));
-                        SentenceGenerator.show();
+                        _refreshList();
                     }
-                },
-                error: function (msg, error, HTTPErr) {
                 }
             });
+            $.ajax(ajaxOptions);
         } else {
             location.hash="#";
         }
