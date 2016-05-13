@@ -172,10 +172,10 @@ var SentenceManager = (function () {
                 timeout: 1000,
                 success: function (data) {
                     if (data.status === "success") {
-                        location.hash="#";
                         _clearControlPanel();
                         localStorage.setItem('sentences', JSON.stringify({}));
                         SentenceGenerator.show();
+                        location.hash="#";
                     }
                 },
                 error: function (msg, error, HTTPErr) {
@@ -302,18 +302,18 @@ var SentenceManager = (function () {
                 timeout: 1000,
                 success: function (data) {
                     if (data.status === "success") {
-                        location.hash="#";
                         _clearControlPanel()
                         localStorage.setItem('sentences', JSON.stringify({}));
                         SentenceGenerator.show();
+                        location.hash="#";
                     }
                 },
                 error: function (msg, error, HTTPErr) {
                 }
             });
         } else {
-            location.hash="#";
             _clearControlPanel();
+            location.hash="#";
         }
     }
 
