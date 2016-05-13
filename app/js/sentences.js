@@ -203,6 +203,7 @@ var SentenceManager = (function () {
             timeout: 1000,
             success: function (data) {
                 if (data.status === "success") {
+                    alert('success');
                     location.hash="#";
                     _clearControlPanel();
                     localStorage.setItem('sentences', JSON.stringify({}));
