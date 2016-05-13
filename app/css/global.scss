@@ -39,9 +39,11 @@ div[data-role="header"] {
   }
 
   .sentenceSave {
+    padding: 10px;
     margin: 20px 0px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
+    border: 0;
   }
 }
