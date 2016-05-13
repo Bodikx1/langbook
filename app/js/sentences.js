@@ -207,7 +207,6 @@ var SentenceManager = (function () {
                     localStorage.setItem('sentences', JSON.stringify({}));
                     SentenceGenerator.show();
                     location.hash="#";
-                    console.log('asdsada');
                 }
             },
             error: function (msg, error, HTTPErr) {
