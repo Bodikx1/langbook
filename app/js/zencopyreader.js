@@ -6,7 +6,8 @@ function corrector(el) {
         s2 = el2.textContent,
         diff;
 
-    var diff = JsDiff.diffWords(s1, s2);
+    var diff = JsDiff.diffChars(s1, s2);
+    // diffWords
 
     el1.textContent = "";
     el2.textContent = "";
