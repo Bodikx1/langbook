@@ -37,20 +37,23 @@ var SentenceGenerator = (function () {
 
     function _showList() {
         var sentenceList = $('#sentences-list'),
-            restoreSentences = JSON.parse(localStorage.getItem('sentences'));
+            restoreSentences = JSON.parse(localStorage.getItem('sentences')),
+            sentenceType = 'translate';
 
         $(sentenceList).listview();
         $(sentenceList).empty();
 
         if (restoreSentences && restoreSentences.sentences) {
             $.each(restoreSentences.sentences, function (key, val) {
+                sentenceType = val.type;
+
                 var item = $('<li/>', {class: "sentence-elem", uuid: val.uuid}).append(
                     $('<div/>', {class: "col"}).append(
                         $('<div/>').append(
-                            $('<a/>', {class: "js-edit-sentence", href: "#add-page", text: val.lang1})
+                            $('<a/>', {class: "js-edit-sentence" + (sentenceType === 'fix' ? ' zcr-old' : ''), href: "#add-page", text: val.lang1})
                         ),
                         $('<div/>').append(
-                            $('<span/>', {text: val.lang2})
+                            $('<span/>', {class: (sentenceType === 'fix' ? ' zcr-corr' : ''), text: val.lang2})
                         ),
                         $('<div/>').append(
                             $('<span/>', {text: _tagsWrapper(val.tags)})
@@ -63,6 +66,10 @@ var SentenceGenerator = (function () {
                         $('<a/>', {class: "js-delete", text: "Delete", href: "#delete-confirm-page"})
                     )
                 );
+
+                if (sentenceType === 'fix') {
+                    corrector(item.find('.col')[0]);
+                }
                 $(sentenceList).append(item);
             });
 
@@ -150,24 +157,14 @@ var SentenceManager = (function () {
             switch (true) {
                 case (e.target.href.indexOf('fix') !== -1):
                     sentenceType = 'fix';
-                    controlPanel.find('textarea[name="language1_fix"]').val(controlPanel.find('textarea[name="language1"]').val());
-                    controlPanel.find('textarea[name="language2_fix"]').val(controlPanel.find('textarea[name="language2"]').val());
                     break;
-
                 case (e.target.href.indexOf('translate') !== -1):
                     sentenceType = 'translate';
-                    controlPanel.find('textarea[name="language1"]').val(controlPanel.find('textarea[name="language1_fix"]').val());
-                    controlPanel.find('textarea[name="language2"]').val(controlPanel.find('textarea[name="language2_fix"]').val());
                     break;
-
                 case (e.target.href.indexOf('note') !== -1):
                     sentenceType = 'note';
                     break;
             }
-        });
-        $(document).on('blur', '.text-corrector, .zencopyreader .btn-success', function (e) {
-            controlPanel.find('textarea[name="language1"]').val(controlPanel.find('textarea[name="language1_fix"]').val());
-            controlPanel.find('textarea[name="language2"]').val(controlPanel.find('textarea[name="language2_fix"]').val());
         });
     }
 
@@ -191,8 +188,8 @@ var SentenceManager = (function () {
         currSentence["lang2"] = $(this).parent().next().text();
         currSentence["tags"] = $(this).parent().nextAll(':last-child').text() && $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
 
-        controlPanel.find('textarea[name="language1"]').val(currSentence.lang1);
-        controlPanel.find('textarea[name="language2"]').val(currSentence.lang2);
+        controlPanel.find('textarea[name="text1_'+sentenceType+'"]').val(currSentence.lang1);
+        controlPanel.find('textarea[name="text2_'+sentenceType+'"]').val(currSentence.lang2);
         for (var i=0;currSentence.tags && i < currSentence.tags.length; i++) {
             $('<button/>', {
                 "data-role": "none",
@@ -206,19 +203,19 @@ var SentenceManager = (function () {
         var currSentenceUuid = currSentence && currSentence.uuid;
         delete currSentence.uuid;
 
-        currSentence["lang1"] = controlPanel.find('textarea[name="language1"]').val();
-        currSentence["lang2"] = controlPanel.find('textarea[name="language2"]').val();
+        currSentence["lang1"] = controlPanel.find('textarea[name="text1_'+sentenceType+'"]').val();
+        currSentence["lang2"] = controlPanel.find('textarea[name="text2_'+sentenceType+'"]').val();
         currSentence["tags"] = [].join.call(tagsPanel.find(':not(.js-add-tag)').map(function() {
             return $(this).text();
         }), ',');
+        currSentence["type"] = sentenceType;
 
         if(currSentenceUuid) {
             $.extend(ajaxOptions, {
                 url: 'http://www.langbook.it/api/sentence/'+currSentenceUuid,
                 method: 'PUT',
                 data: JSON.stringify({
-                    "sentence": currSentence,
-                    "type": sentenceType
+                    "sentence": currSentence
                 }),
             });
             $.ajax(ajaxOptions);
@@ -229,18 +226,18 @@ var SentenceManager = (function () {
 
     function _addSentence(e) {
         currSentence = {};
-        currSentence["lang1"] = controlPanel.find('textarea[name="language1"]').val();
-        currSentence["lang2"] = controlPanel.find('textarea[name="language2"]').val();
+        currSentence["lang1"] = controlPanel.find('textarea[name="text1_'+sentenceType+'"]').val();
+        currSentence["lang2"] = controlPanel.find('textarea[name="text2_'+sentenceType+'"]').val();
         currSentence["tags"] = [].join.call(tagsPanel.find(':not(.js-add-tag)').map(function() {
             return $(this).text();
         }), ',');
+        currSentence["type"] = sentenceType;
 
         $.extend(ajaxOptions, {
             url: 'http://www.langbook.it/api/sentence',
             method: 'POST',
             data: JSON.stringify({
-                "sentence": currSentence,
-                "type": sentenceType
+                "sentence": currSentence
             }),
         });
         $.ajax(ajaxOptions);

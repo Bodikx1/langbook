@@ -1,7 +1,7 @@
 function corrector(el) {
 
-    var el1 = el.children[0],
-        el2 = el.children[2],
+    var el1 = el.querySelector('.zcr-old'),
+        el2 = el.querySelector('.zcr-corr'),
         s1 = el1.textContent,
         s2 = el2.textContent,
         diff;
@@ -105,7 +105,7 @@ $('body').on('click', '.zencopyreader .btn-success', function() {
         }
     });
 
-    zencopyreader.currCorrector.val(newText.join('\n'));
+    zencopyreader.currCorrector.next().val(newText.join('\n'));
     $zencr.fadeOut();
 });
 
