@@ -39,8 +39,32 @@
         <div class="ui-content">
             <div class="sentence-control">
                 <form>
-                    <textarea style="resize: none;" class="stretched rounded-borders" name="language1" placeholder="Language 1"></textarea>
-                    <textarea style="resize: none;" class="stretched rounded-borders" name="language2" placeholder="Language 2"></textarea>
+                    <div data-role="tabs" id="actions-tabs">
+                        <div data-role="navbar">
+                            <ul>
+                                <li><a href="#fix" data-ajax="false">Fix</a></li>
+                                <li><a href="#translate" data-ajax="false">Translate</a></li>
+                                <li><a href="#note" data-ajax="false">Note</a></li>
+                            </ul>
+                        </div>
+                        <div id="fix">
+                            <ul data-role="listview" data-inset="true">
+                                <li><a href="#">Acura</a></li>
+                                <li><a href="#">Audi</a></li>
+                                <li><a href="#">BMW</a></li>
+                                <li><a href="#">Cadillac</a></li>
+                                <li><a href="#">Ferrari</a></li>
+                            </ul>
+                        </div>
+                        <div id="translate">
+                            <textarea style="resize: none;" class="stretched rounded-borders" name="language1" placeholder="Language 1"></textarea>
+                            <textarea style="resize: none;" class="stretched rounded-borders" name="language2" placeholder="Language 2"></textarea>
+                        </div>
+                        <div id="note">
+                            asdasdasdasd
+                        </div>
+                    </div>
+
                     <div class="tags-panel">
                         <button data-role="none" class="tag-btn js-add-tag">Add tag..</button>
                     </div>

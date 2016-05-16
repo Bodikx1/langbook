@@ -140,6 +140,10 @@ var SentenceManager = (function () {
         $(document).on('click', '.tags-panel button:not(.js-add-tag)', _editTag);
         $(document).on('click', '.js-delete-sentence', _deleteCurrSentence);
         $(document).on('click', '.js-back-btn', _clearControlPanel);
+        $(document).on("pagebeforeshow", "#add-page", function(){
+            $( "#actions-tabs").find('a[href="#translate"]').addClass('ui-btn-active');
+            $( "#actions-tabs" ).tabs("option", "active", 1);
+        });
     }
 
     function _clearControlPanel() {
