@@ -102,7 +102,8 @@ var SentenceManager = (function () {
             error: function (msg, error, HTTPErr) {
                 location.hash="#";
             }
-        };
+        },
+        sentenceType = 'translate';
 
     function _refreshList() {
         _clearControlPanel();
@@ -143,16 +144,24 @@ var SentenceManager = (function () {
         $(document).on('pagebeforeshow', '#add-page', function() {
             $( "#actions-tabs").find('a[href="#translate"]').addClass('ui-btn-active');
             $( "#actions-tabs" ).tabs("option", "active", 1);
+            sentenceType = 'translate';
         });
         $(document).on('click', '#actions-tabs ul[role="tablist"]>li>a', function (e) {
             switch (true) {
                 case (e.target.href.indexOf('fix') !== -1):
+                    sentenceType = 'fix';
                     controlPanel.find('textarea[name="language1_fix"]').val(controlPanel.find('textarea[name="language1"]').val());
                     controlPanel.find('textarea[name="language2_fix"]').val(controlPanel.find('textarea[name="language2"]').val());
                     break;
+
                 case (e.target.href.indexOf('translate') !== -1):
+                    sentenceType = 'translate';
                     controlPanel.find('textarea[name="language1"]').val(controlPanel.find('textarea[name="language1_fix"]').val());
                     controlPanel.find('textarea[name="language2"]').val(controlPanel.find('textarea[name="language2_fix"]').val());
+                    break;
+
+                case (e.target.href.indexOf('note') !== -1):
+                    sentenceType = 'note';
                     break;
             }
         });
@@ -207,7 +216,10 @@ var SentenceManager = (function () {
             $.extend(ajaxOptions, {
                 url: 'http://www.langbook.it/api/sentence/'+currSentenceUuid,
                 method: 'PUT',
-                data: JSON.stringify({"sentence": currSentence}),
+                data: JSON.stringify({
+                    "sentence": currSentence,
+                    "type": sentenceType
+                }),
             });
             $.ajax(ajaxOptions);
         } else {
@@ -226,7 +238,10 @@ var SentenceManager = (function () {
         $.extend(ajaxOptions, {
             url: 'http://www.langbook.it/api/sentence',
             method: 'POST',
-            data: JSON.stringify({"sentence": currSentence}),
+            data: JSON.stringify({
+                "sentence": currSentence,
+                "type": sentenceType
+            }),
         });
         $.ajax(ajaxOptions);
     }
