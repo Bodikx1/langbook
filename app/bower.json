@@ -1,6 +1,7 @@
 {
   "name": "langbook",
   "dependencies": {
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "fixer": "git@codehub.ovh:reglobal/lang-mistakes-fixer.git"
   }
 }

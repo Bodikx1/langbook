@@ -140,9 +140,25 @@ var SentenceManager = (function () {
         $(document).on('click', '.tags-panel button:not(.js-add-tag)', _editTag);
         $(document).on('click', '.js-delete-sentence', _deleteCurrSentence);
         $(document).on('click', '.js-back-btn', _clearControlPanel);
-        $(document).on("pagebeforeshow", "#add-page", function(){
+        $(document).on('pagebeforeshow', '#add-page', function() {
             $( "#actions-tabs").find('a[href="#translate"]').addClass('ui-btn-active');
             $( "#actions-tabs" ).tabs("option", "active", 1);
+        });
+        $(document).on('click', '#actions-tabs ul[role="tablist"]>li>a', function (e) {
+            switch (true) {
+                case (e.target.href.indexOf('fix') !== -1):
+                    controlPanel.find('textarea[name="language1_fix"]').val(controlPanel.find('textarea[name="language1"]').val());
+                    controlPanel.find('textarea[name="language2_fix"]').val(controlPanel.find('textarea[name="language2"]').val());
+                    break;
+                case (e.target.href.indexOf('translate') !== -1):
+                    controlPanel.find('textarea[name="language1"]').val(controlPanel.find('textarea[name="language1_fix"]').val());
+                    controlPanel.find('textarea[name="language2"]').val(controlPanel.find('textarea[name="language2_fix"]').val());
+                    break;
+            }
+        });
+        $(document).on('blur', '.text-corrector, .zencopyreader .btn-success', function (e) {
+            controlPanel.find('textarea[name="language1"]').val(controlPanel.find('textarea[name="language1_fix"]').val());
+            controlPanel.find('textarea[name="language2"]').val(controlPanel.find('textarea[name="language2_fix"]').val());
         });
     }
 
@@ -153,7 +169,6 @@ var SentenceManager = (function () {
 
     function _addNewSentence(e) {
         currSentence = null;
-        controlPanel.find('textarea[name="language1"]').val(e.target.value);
     }
 
     function _setCurrUuid() {

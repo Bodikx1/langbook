@@ -62,6 +62,7 @@ gulp.task('vendors', function () {
     gulp.src([sourcesDir + bowDir + 'bootstrap/dist/css/bootstrap.min.css']).pipe(gulp.dest(destDir + 'vendor/bootstrap/css/'));
     gulp.src([sourcesDir + bowDir + 'bootstrap/dist/fonts/*']).pipe(gulp.dest(destDir + 'vendor/bootstrap/fonts/'));
     gulp.src([sourcesDir + bowDir + 'bootstrap/dist/js/bootstrap.min.js']).pipe(gulp.dest(destDir + 'vendor/bootstrap/js/'));
+    gulp.src([sourcesDir + bowDir + 'fixer/node_modules/diff/dist/diff.min.js']).pipe(gulp.dest(destDir + 'vendor/diff/js/'));
 });
 
 /** Bower */
