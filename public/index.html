@@ -13,12 +13,17 @@
 
 <div id="main-page" data-role="page" data-theme="a">
     <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
-        <a data-role="none" href="#" class="pull-left login js-toggle-actions">Edit</a>
+        <a data-role="none" href="#login-page" class="pull-left js-login-link">Login</a>
+        <a data-role="none" href="#register-page" class="pull-left js-register-link">Register</a>
         <h1><b>langbook.it</b></h1>
         <div style="background-color: #ddd;padding: 0 1em;" class="ui-content">
             <input id="searchFilter" data-type="search" data-wrapper-class="search-wrap" type="text" class="ui-corner-all stretched rounded-borders" placeholder="Search">
         </div>
-        <a data-role="none" href="#add-page" class="pull-right js-add-sentence">Add</a>
+        <div>
+            <a style="margin:0 5px;" data-role="none" href="#" class="pull-right js-toggle-actions">Edit</a>
+            <span style="line-height: 30px;" class="pull-right"> | </span>
+            <a style="margin:0 5px;" data-role="none" href="#add-page" class="pull-right js-add-sentence">Add</a>
+        </div>
     </div>
     <div role="main">
         <ul id="sentences-list" data-role="listview" data-filter="true" data-input="#searchFilter"></ul>
@@ -75,6 +80,94 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="login-page" data-role="page" data-theme="a">
+    <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
+        <div data-role="navbar">
+            <ul>
+                <li><a role="button" href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left js-back-btn" data-rel="back">Back</a></li>
+            </ul>
+        </div>
+        <h1><b>Login</b></h1>
+    </div>
+    <div role="main">
+        <div class="ui-content">
+            <form id="login-form">
+                <div class="form-group">
+                    <div style="display: none;" class="js-msg-block alert alert-danger"></div>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></div>
+                        <input data-role="none" name="email" type="text" class="form-control" placeholder="Enter email">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+                        <input data-role="none" name="password" type="password" class="form-control" placeholder="Enter password">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <button data-role="none" type="submit" class="btn btn-primary stretched">Login</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="register-page" data-role="page" data-theme="a">
+    <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
+        <div data-role="navbar">
+            <ul>
+                <li><a role="button" href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left js-back-btn" data-rel="back">Back</a></li>
+            </ul>
+        </div>
+        <h1><b>Ready?</b></h1>
+    </div>
+    <div role="main">
+        <div class="ui-content">
+            <form id="register-form">
+                <div class="form-group">
+                    <div style="display: none;" class="js-msg-block alert alert-danger"></div>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></div>
+                        <input data-role="none" name="email" type="text" class="form-control" placeholder="Email address">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+                        <input data-role="none" name="password" type="password" class="form-control" placeholder="Your password">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <button data-role="none" type="submit" class="btn btn-primary stretched">Let's go</button>
+                        <div>
+                            <br>
+                            Already have an account?<br>
+                            <a href="#login-page">Login here</a> :)
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="profile-page" data-role="page" data-theme="a">
+    <div data-role="header" data-position="fixed" data-fullscreen="false" data-tap-toggle="false">
+        <div data-role="navbar">
+            <ul>
+                <li><a role="button" href="javascript:void(0);" class="ui-btn ui-corner-all ui-shadow ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left js-back-btn" data-rel="back">Back</a></li>
+            </ul>
+        </div>
+        <h1><b>Profile</b></h1>
+    </div>
+    <div role="main">
+        <div class="ui-content">
         </div>
     </div>
 </div>

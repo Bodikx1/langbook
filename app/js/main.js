@@ -1,6 +1,32 @@
 $(document).ready(function(){
     var
         init = function () {
+            if (User.isAuthorized()) {
+                $('.js-login-link').replaceWith(
+                    $('<a/>', {
+                        "href": "#profile-page",
+                        "data-role": "none",
+                        class: "pull-left js-login-link",
+                        text: "My profile"
+                    })
+                );
+                $('.js-register-link').replaceWith(
+                    $('<a/>', {
+                        "href": "#",
+                        "data-role": "none",
+                        class: "pull-left js-logout-link",
+                        text: "Logout",
+                        click: function (e) {
+                            e.preventDefault();
+                            User.loginSuccessHandler('', '');
+                            location.href = "/"
+                        }
+                    })
+                );
+            }
+
+            LoginForm.init();
+            RegisterForm.init();
             SentenceGenerator.init();
             SentenceManager.init();
         };
