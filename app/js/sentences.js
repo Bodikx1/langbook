@@ -271,7 +271,6 @@ var SentenceManager = (function () {
                 tagBtn
             ),
             replaceWithBtn = function(e) {
-                e.preventDefault();
                 e.stopPropagation();
 
                 if (e.target.tagName === "INPUT" && e.keyCode === 13 || e.target.tagName === "SPAN") {
@@ -310,7 +309,6 @@ var SentenceManager = (function () {
                 tagBtn
             ),
             replaceWithBtn = function(e) {
-                e.preventDefault();
                 e.stopPropagation();
 
                 if (e.target.tagName === "INPUT" && e.keyCode === 13 || e.target.tagName === "SPAN") {
