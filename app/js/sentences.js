@@ -16,6 +16,9 @@ var SentenceGenerator = (function () {
 
     function _loadData() {
         $.ajax({
+            headers: {
+                "X-Session-Token": typeof getCookie("session_uuid") !== "undefined" ? getCookie('session_uuid') : ''
+            },
             url: 'http://www.langbook.it/api/sentences',
             method: 'GET',
             async: true,
@@ -97,6 +100,9 @@ var SentenceManager = (function () {
         controlPanel = $('.sentence-control'),
         deleteConfirmModal = $('#delete-confirm-modal'),
         ajaxOptions = {
+            headers: {
+                "X-Session-Token": typeof getCookie("session_uuid") !== "undefined" ? getCookie('session_uuid') : ''
+            },
             async: true,
             contentType: 'application/json',
             data: null,
