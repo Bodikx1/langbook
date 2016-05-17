@@ -110,7 +110,8 @@ var SentenceManager = (function () {
                 location.hash="#";
             }
         },
-        sentenceType = 'translate';
+        sentenceType = 'translate',
+        activeTabIndex = 1;
 
     function _refreshList() {
         _clearControlPanel();
@@ -149,9 +150,16 @@ var SentenceManager = (function () {
         $(document).on('click', '.js-delete-sentence', _deleteCurrSentence);
         $(document).on('click', '.js-back-btn', _clearControlPanel);
         $(document).on('pagebeforeshow', '#add-page', function() {
-            $( "#actions-tabs").find('a[href="#translate"]').addClass('ui-btn-active');
-            $( "#actions-tabs" ).tabs("option", "active", 1);
-            sentenceType = 'translate';
+            if (currSentence) {
+                $("#actions-tabs").find('a').removeClass('ui-btn-active');
+                $("#actions-tabs").find('a[href="#'+sentenceType+'"]').addClass('ui-btn-active');
+                $("#actions-tabs").tabs("option", "active", activeTabIndex);
+            } else {
+                $("#actions-tabs").find('a').removeClass('ui-btn-active');
+                $("#actions-tabs").find('a[href="#translate"]').addClass('ui-btn-active');
+                $("#actions-tabs").tabs("option", "active", 1);
+                sentenceType = 'translate';
+            }
         });
         $(document).on('click', '#actions-tabs ul[role="tablist"]>li>a', function (e) {
             switch (true) {
@@ -175,6 +183,7 @@ var SentenceManager = (function () {
 
     function _addNewSentence(e) {
         currSentence = null;
+        activeTabIndex = 1;
     }
 
     function _setCurrUuid() {
@@ -187,6 +196,14 @@ var SentenceManager = (function () {
         currSentence["lang1"] = $(this).text();
         currSentence["lang2"] = $(this).parent().next().text();
         currSentence["tags"] = $(this).parent().nextAll(':last-child').text() && $.trim($(this).parent().nextAll(':last-child').text().replace(/[\[\]]/g, '')).split(' ');
+
+        if ($(this).hasClass('zcr-old')) {
+            sentenceType = "fix";
+            activeTabIndex = 0;
+        } else {
+            sentenceType = "translate";
+            activeTabIndex = 1;
+        }
 
         controlPanel.find('textarea[name="text1_'+sentenceType+'"]').val(currSentence.lang1);
         controlPanel.find('textarea[name="text2_'+sentenceType+'"]').val(currSentence.lang2);
