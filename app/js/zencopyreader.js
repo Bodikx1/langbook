@@ -4,11 +4,14 @@ function corrector(el) {
         el2 = el.querySelector('.zcr-corr'),
         s1 = el1.textContent,
         s2 = el2.textContent,
-        diff;
+        diff,
+        regexpCheckLatin = /[A-z\u00C0-\u00ff]+/g;
 
-    var diff = JsDiff.diffChars(s1, s2);
-    // diffWords
-
+    if (new RegExp(regexpCheckLatin).test(s1)) {
+        diff = JsDiff.diffWords(s1, s2);
+    } else {
+        diff = JsDiff.diffChars(s1, s2);
+    }
     el1.textContent = "";
     el2.textContent = "";
 
