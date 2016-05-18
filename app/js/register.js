@@ -29,7 +29,24 @@ var RegisterForm = (function () {
                     if (data.status === "success") {
                         data.user_uuid && User.loginSuccessHandler('', data.user_uuid);
                         data.msg && msgBlock.removeClass('alert-danger').addClass('alert-success').text(data.msg).fadeIn();
-                        location.hash = '#login-page';
+
+                        $.ajax({
+                            url: 'http://www.langbook.it/api/login',
+                            method: 'POST',
+                            async: true,
+                            data: {login: formData},
+                            timeout: 10000,
+                            success: function (data) {
+                                if (data.status === "success") {
+                                    User.loginSuccessHandler(data.session_uuid, data.user_uuid);
+                                    data.msg && msgBlock.removeClass('alert-danger').addClass('alert-success').text(data.msg).fadeIn();
+                                    location.href = '/';
+                                }
+                            },
+                            error: function (msg, error, HTTPErr) {
+                                msgBlock.text(msg.responseJSON.msg).fadeIn();
+                            }
+                        });
                     }
                 },
                 error: function (msg, error, HTTPErr) {

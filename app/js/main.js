@@ -27,6 +27,7 @@ $(document).ready(function(){
 
             LoginForm.init();
             RegisterForm.init();
+            ProfileForm.init();
             SentenceGenerator.init();
             SentenceManager.init();
         };
